@@ -5,12 +5,13 @@ import './App.css'
 
 function App() {
   const [msg,setMsg] = useState('')
-
+  const [ws,setWs] = useState()
   useEffect(() => {
     const socket = new WebSocket('ws://159.223.74.41:8072/websocket?Cookie=session_id=3a25d30888a3a191ad8f5bb5dc2125c0552b0b40');
 
     socket.onopen = () => {
       console.log('WebSocket connected');
+      setWs(socket)
     };
 
     socket.onmessage = (event) => {
@@ -57,6 +58,7 @@ function App() {
   })
 }
 const sendMessage = async()=>{
+  ws.send(JSON.stringify({msg}))
   fetch('/api/mail/message/post',{
     method :'POST',
     headers : {
