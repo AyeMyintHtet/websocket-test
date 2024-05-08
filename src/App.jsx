@@ -6,11 +6,13 @@ import './App.css'
 function App() {
   const [msg,setMsg] = useState('')
   const [ws,setWs] = useState()
+
   useEffect(() => {
-    const socket = new WebSocket('ws://159.223.74.41:8072/websocket?Cookie=session_id=3a25d30888a3a191ad8f5bb5dc2125c0552b0b40');
+    const socket = new WebSocket('ws://159.223.74.41:8072/websocket?name=09951385842&pwd=admin');
 
     socket.onopen = () => {
       console.log('WebSocket connected');
+      socket.send('{"event_name": "subscribe","data": {"channels": [], "last": 0}}')
       setWs(socket)
     };
 
@@ -58,7 +60,8 @@ function App() {
   })
 }
 const sendMessage = async()=>{
-  ws.send(JSON.stringify({msg}))
+  // ws.send(JSON.stringify({msg}))
+  // ws.send(JSON.stringify({ type: 'set_cookie', cookie: 'yourCookie=cookieValue; SameSite=Strict' }));
   fetch('/api/mail/message/post',{
     method :'POST',
     headers : {
@@ -81,6 +84,7 @@ const sendMessage = async()=>{
             "partner_ids": [],
             "subtype_xmlid": "mail.mt_comment",
             "partner_emails": []
+            
           }
       }
   
